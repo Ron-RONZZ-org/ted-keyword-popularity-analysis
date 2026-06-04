@@ -29,7 +29,7 @@ immediately.
 4. **Edit** `AGENTS.md` (root) — project description, tech stack, language version.
 5. **Edit** each `AGENTS-*.md` — fill in domain-specific `TODO` blocks.
 6. **Update** `src/pkg/config.py` — add your tunable parameters.
-7. **Run** `pip install -e ".[dev]"` and verify `make test` passes.
+7. **Run** `uv pip install -e ".[dev]"` (or `pip install -e ".[dev]"` without uv) and verify `make test` passes.
 8. **Start** with `make plan`, using the AGENTS prompts to collaborate with an AI.
 
 ## AI Collaboration Model
