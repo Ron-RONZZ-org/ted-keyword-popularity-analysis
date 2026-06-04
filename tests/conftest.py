@@ -7,7 +7,7 @@ from typing import Generator
 
 import pytest
 
-from pkg import ROOT_LOGGER_NAME
+from ted_analysis import ROOT_LOGGER_NAME
 
 
 def pytest_configure(config: pytest.Config) -> None:
