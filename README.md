@@ -1,52 +1,60 @@
-# Research Boilerplate
+# TED Keyword Popularity Analysis
 
-A **thin, personal boilerplate** for data-analysis research projects. The core
-reusable asset is the **AGENTS.md process framework** — a hierarchy of AI
-collaboration prompts that guide each stage of the research lifecycle.
-
-Instead of rebuilding structural and procedural decisions for every project,
-clone this repo, fill in `TODO` blocks, and start collaborating with AI agents
-immediately.
+Which keywords are most globally prominent across all public TED Talks?
+This project investigates keyword prominence using **Term Frequency weighted
+by view count**, providing a data-driven answer grounded in the full corpus
+of ~5,700 TED Talks.
 
 ## Pipeline Stages
 
-| `make` target | AGENTS file | What it does |
+| `make` target | Module | What it does |
 |---|---|---|
-| `plan` | [`AGENTS-planning.md`](AGENTS-planning.md) | Formulate research question, draft OSF pre-registration |
-| `litreview` | [`AGENTS-litreview.md`](AGENTS-litreview.md) | Search, annotate, and synthesise literature |
-| `acquire` | [`AGENTS-acquire.md`](AGENTS-acquire.md) | Download and validate raw data |
-| `preprocess` | [`AGENTS-preprocess.md`](AGENTS-preprocess.md) | Clean, QC, transform — output feature dataset |
-| `analyze` | [`AGENTS-analysis.md`](AGENTS-analysis.md) | Fit statistical model, bootstrap, sensitivity |
-| `visualize` | [`AGENTS-visualize.md`](AGENTS-visualize.md) | Generate publication-quality figures |
-| `report` | [`AGENTS-report.md`](AGENTS-report.md) | Compile results into manuscript / report |
-| `test` | [`AGENTS-tests.md`](AGENTS-tests.md) | Run test suite (independent of data) |
+| `acquire` | `ted_analysis.acquire` | Download transcripts (via `yt-transcript-pro`) + view counts (YouTube Data API v3) |
+| `preprocess` | `ted_analysis.preprocess` | NLTK tokenization, stopword removal, per-video term-frequency |
+| `analyze` | `ted_analysis.analysis` | Weighted TF scoring, bootstrap CIs, TF-IDF, temporal trends |
+| `visualize` | `ted_analysis.visualize` | Publication-quality figures (PDF + PNG) |
+| `report` | `ted_analysis.report` | Summary statistics, tables, Quarto manuscript |
+| `test` | `tests/` | Run test suite (independent of data) |
 
-## How to Adapt (~30 min)
+## Setup
 
-1. **Clone or copy** this repo into your new project directory.
-2. **Rename** `src/pkg/` to `src/<your_package>/`.
-3. **Edit** `pyproject.toml` — name, description, author, dependencies.
-4. **Edit** `AGENTS.md` (root) — project description, tech stack, language version.
-5. **Edit** each `AGENTS-*.md` — fill in domain-specific `TODO` blocks.
-6. **Update** `src/pkg/config.py` — add your tunable parameters.
-7. **Run** `uv pip install -e ".[dev]"` (or `pip install -e ".[dev]"` without uv) and verify `make test` passes.
-8. **Start** with `make plan`, using the AGENTS prompts to collaborate with an AI.
+```bash
+# Create and activate virtual environment
+uv venv && source .venv/bin/activate
 
-## AI Collaboration Model
+# Install the package with dev dependencies
+uv pip install -e ".[dev]"
 
-The AGENTS.md files use a **hierarchical context model**:
-- **Root** [`AGENTS.md`](AGENTS.md) defines global conventions (naming, imports,
-  docstrings, commit format, tech stack).
-- **Module-level** files (`AGENTS-{stage}.md`) override root rules with
-  stage-specific constraints, data contracts, and AI prompts.
+# Verify everything works
+make test
+```
 
-When working on a specific stage, an AI agent first reads the root AGENTS.md
-for global rules, then the stage-specific AGENTS file for domain instructions.
-Local rules override global rules.
+> **Note:** View counts require a YouTube Data API v3 key. Set the
+> `YOUTUBE_API_KEY` environment variable before running `make acquire`.
+> Transcripts are fetched without an API key via `yt-transcript-pro`.
+
+## Quick Start
+
+```bash
+# Run the test suite (no data needed)
+make test
+
+# Run the full pipeline (after OSF pre-registration)
+make all
+```
+
+Individual stages can be run with `make acquire`, `make preprocess`, etc.
+
+## AI Collaboration
+
+This project uses a hierarchical AGENTS.md framework to guide AI-assisted
+development. See the [root AGENTS.md](AGENTS.md) for global conventions and
+module-level files (`AGENTS-acquire.md`, `AGENTS-preprocess.md`, etc.) for
+stage-specific rules.
 
 ## License
 
 | Component | License | File |
-|-----------|---------|------|
-| **Source code** (Python scripts) | **MIT** | [`LICENSE`](LICENSE) |
-| **Non-software materials** (data, figures, report, documentation) | **CC BY 4.0** | [`LICENSE.content`](LICENSE.content) |
+|---|---|---|
+| **Source code** (Python scripts) | **MIT** | [LICENSE](LICENSE) |
+| **Non-software materials** (data, figures, report, documentation) | **CC BY 4.0** | [LICENSE.content](LICENSE.content) |

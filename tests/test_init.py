@@ -6,7 +6,7 @@ import logging
 import tempfile
 from pathlib import Path
 
-from pkg import ROOT_LOGGER_NAME, setup_logging
+from ted_analysis import ROOT_LOGGER_NAME, setup_logging
 
 
 class TestSetupLogging:

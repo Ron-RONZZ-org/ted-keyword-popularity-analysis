@@ -7,24 +7,24 @@ from __future__ import annotations
 
 import logging
 
-from pkg import ROOT_LOGGER_NAME
-from pkg.config import ProjectConfig
+from ted_analysis import ROOT_LOGGER_NAME
+from ted_analysis.config import TEDAnalysisConfig
 
 logger = logging.getLogger(ROOT_LOGGER_NAME)
 
 
-def main(config: ProjectConfig | None = None) -> None:
+def main(config: TEDAnalysisConfig | None = None) -> None:
     """Run the report stage.
 
     Args:
-        config: Pipeline configuration.  Falls back to ``ProjectConfig()``
+        config: Pipeline configuration.  Falls back to ``TEDAnalysisConfig()``
             defaults when ``None``.
 
     Raises:
         NotImplementedError: This module is a stub — override it with
             project-specific reporting logic.
     """
-    cfg = config or ProjectConfig()
+    cfg = config or TEDAnalysisConfig()
     msg = (
         f"report.py is a stub.  Implement:\n"
         f"  1. Read analysis results from {cfg.results_dir / cfg.analysis_results_filename}\n"
