@@ -19,11 +19,13 @@ Usage
 
 from __future__ import annotations
 
+import asyncio
 import logging
 import os
 import random
 import time
 from datetime import datetime, timezone
+from pathlib import Path
 
 import pandas as pd
 import pandera.pandas as pa
@@ -125,17 +127,21 @@ def _fetch_transcripts(cfg: TEDAnalysisConfig, videos: list) -> pd.DataFrame:
     Raises:
         ValueError: If *every* video failed transcript extraction.
     """
+    _transcript_kw: dict[str, object] = dict(
+        languages=list(cfg.transcript_languages),
+        allow_generated=True,
+        concurrency=cfg.transcript_concurrency,
+        max_retries=cfg.transcript_retries,
+    )
+    if cfg.transcript_cookies_file:
+        _transcript_kw["cookies_file"] = Path(cfg.transcript_cookies_file)
+
     extractor = AutoTranscriptExtractor(
-        config=TranscriptConfig(
-            languages=list(cfg.transcript_languages),
-            allow_generated=True,
-            concurrency=cfg.transcript_concurrency,
-            max_retries=cfg.transcript_retries,
-        ),
+        config=TranscriptConfig(**_transcript_kw),
         backend_order=["auto"],
     )
 
-    results = extractor.fetch_many(videos)
+    results = asyncio.run(extractor.fetch_many(videos))
 
     rows: list[dict] = []
     for res in results:

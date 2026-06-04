@@ -40,5 +40,8 @@ data/raw/ted_dataset.csv
 data/processed/
 results/
 
+# Browser cookies (transcript auth, never commit)
+data/external/cookies*
+
 # Editor / tool metadata
 .serena/

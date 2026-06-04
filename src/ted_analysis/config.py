@@ -55,6 +55,15 @@ class TEDAnalysisConfig:
     transcript_languages: tuple[str, ...] = ("en", "en-US", "en-GB")
     """Preferred language codes for transcript fallback, in order."""
 
+    transcript_cookies_file: str | None = None
+    """Path to a Netscape-format cookies file for authenticated transcript access.
+
+    When set (e.g. ``"data/external/cookies.txt"``), this file is passed to
+    ``yt-transcript-pro`` which uses it to authenticate with YouTube.
+    Useful when running from an IP that YouTube blocks for unauthenticated
+    transcript requests.
+    """
+
     # ── YouTube Data API settings ─────────────────────────────────────
     api_batch_size: int = 50
     """Number of video IDs per ``videos.list`` request (YouTube max is 50)."""
