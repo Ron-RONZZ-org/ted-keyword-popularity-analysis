@@ -135,6 +135,8 @@ def _fetch_transcripts(cfg: TEDAnalysisConfig, videos: list) -> pd.DataFrame:
     )
     if cfg.transcript_cookies_file:
         _transcript_kw["cookies_file"] = Path(cfg.transcript_cookies_file)
+    if cfg.transcript_proxy:
+        _transcript_kw["proxy"] = cfg.transcript_proxy
 
     extractor = AutoTranscriptExtractor(
         config=TranscriptConfig(**_transcript_kw),

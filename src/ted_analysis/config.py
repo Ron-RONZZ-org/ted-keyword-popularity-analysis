@@ -62,6 +62,20 @@ class TEDAnalysisConfig:
     ``yt-transcript-pro`` which uses it to authenticate with YouTube.
     Useful when running from an IP that YouTube blocks for unauthenticated
     transcript requests.
+
+    .. note::
+       Cookie auth is currently **disabled** in the upstream
+       ``youtube-transcript-api`` library.  If cookies don't work, use
+       ``transcript_proxy`` instead.
+    """
+
+    transcript_proxy: str | None = None
+    """HTTP/SOCKS proxy URL for transcript fetching (e.g.
+    ``"http://user:pass@host:port"`` or ``"socks5://host:port"``).
+
+    This is passed to the ``youtube-transcript-api`` library which uses it
+    to work around IP-based blocking by YouTube.  See the library's README
+    for proxy provider recommendations.
     """
 
     # ── YouTube Data API settings ─────────────────────────────────────
