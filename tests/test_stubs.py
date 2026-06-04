@@ -19,13 +19,6 @@ def _stub_test(module_name: str) -> None:
         mod.main(config)
 
 
-class TestAcquireStub:
-    """acquire.py stub raises NotImplementedError."""
-
-    def test_main_raises(self) -> None:
-        _stub_test("acquire")
-
-
 class TestPreprocessStub:
     """preprocess.py stub raises NotImplementedError."""
 
