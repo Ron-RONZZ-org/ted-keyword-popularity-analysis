@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Pipeline logs
+logs/
+
+# Pooch download cache
+data/raw/.pooch_cache/
+
+# Notebook checkpoints and rendered output
+notebooks/.ipynb_checkpoints/
+notebooks/*.html
+notebooks/*.quarto_ipynb
+
+# Build artifacts
+dist/
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# IDE metadata
+.vscode/
+.idea/
+
+# Literature PDFs (track annotations only)
+literature/papers/
+
+# Environment
+.venv/
+uv.lock
