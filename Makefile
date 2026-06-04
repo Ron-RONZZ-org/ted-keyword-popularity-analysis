@@ -17,7 +17,7 @@ dirs:
 
 # ── Package installation ────────────────────────────────────────────────
 install:
-	pip install -e ".[dev]"
+	uv pip install -e ".[dev]"
 
 # ── Pipeline stages ─────────────────────────────────────────────────────
 plan:
@@ -61,7 +61,7 @@ test:
 
 # ── Housekeeping ────────────────────────────────────────────────────────
 clean:
-	rm -rf logs/*.log results/figures/* data/processed/*
+	mkdir -p logs && rm -rf logs/*.log results/figures/* data/processed/*
 
 # ── Full pipeline ───────────────────────────────────────────────────────
 all: install plan litreview acquire preprocess analyze visualize report

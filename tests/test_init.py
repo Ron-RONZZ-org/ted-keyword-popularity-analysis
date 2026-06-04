@@ -6,7 +6,7 @@ import logging
 import tempfile
 from pathlib import Path
 
-from pkg import setup_logging
+from pkg import ROOT_LOGGER_NAME, setup_logging
 
 
 class TestSetupLogging:
@@ -17,7 +17,7 @@ class TestSetupLogging:
         with tempfile.TemporaryDirectory() as tmpdir:
             log_dir = Path(tmpdir) / "logs"
             setup_logging(str(log_dir))
-            logger = logging.getLogger("pkg")
+            logger = logging.getLogger(ROOT_LOGGER_NAME)
             logger.info("Test message")
             logger.handlers.clear()  # clean up for other tests
 
@@ -31,7 +31,7 @@ class TestSetupLogging:
         with tempfile.TemporaryDirectory() as tmpdir:
             log_dir = Path(tmpdir) / "logs"
             setup_logging(str(log_dir))
-            logger = logging.getLogger("pkg")
+            logger = logging.getLogger(ROOT_LOGGER_NAME)
             n_handlers = len(logger.handlers)
             setup_logging(str(log_dir))
             assert len(logger.handlers) == n_handlers
@@ -42,12 +42,12 @@ class TestSetupLogging:
         with tempfile.TemporaryDirectory() as tmpdir:
             log_dir = Path(tmpdir) / "logs"
             setup_logging(str(log_dir))
-            logger = logging.getLogger("pkg")
+            logger = logging.getLogger(ROOT_LOGGER_NAME)
             logger.info("Format check")
             logger.handlers.clear()
 
             log_file = log_dir / "pipeline.log"
             content = log_file.read_text()
             assert "INFO" in content
-            assert "pkg" in content
+            assert ROOT_LOGGER_NAME in content
             assert "Format check" in content

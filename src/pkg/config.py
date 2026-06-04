@@ -29,12 +29,15 @@ class ProjectConfig:
 
     # ── Data source ───────────────────────────────────────────────────
     # TODO: add fields for your data source (URLs, station IDs, etc.)
+    local_fallback_dir: Path = field(default_factory=lambda: Path("data") / "external" / "fallback")
 
     # ── QC thresholds ─────────────────────────────────────────────────
     # TODO: add QC thresholds (missing data limits, physical bounds, etc.)
 
     # ── Analysis parameters ───────────────────────────────────────────
     # TODO: add model parameters, bootstrap settings, etc.
+    n_bootstrap: int = 1000
+    bootstrap_ci_level: float = 0.95
 
     # ── Output paths (relative to project root) ───────────────────────
     data_dir: Path = field(default_factory=lambda: Path("data"))

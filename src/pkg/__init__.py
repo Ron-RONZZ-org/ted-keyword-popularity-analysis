@@ -9,13 +9,20 @@ The logging setup below is generic — copy it verbatim to any new project.
 from __future__ import annotations
 
 import logging
+import logging.handlers
 import sys
 from pathlib import Path
 
 __version__ = "0.1.0"
 
 _LOG_FORMAT = "%(asctime)s | %(levelname)s | %(name)s | %(message)s"
-_ROOT_LOGGER_NAME = "pkg"  # TODO: update when renaming src/pkg/
+# Derived from the package name — survives package rename automatically.
+ROOT_LOGGER_NAME: str = __name__
+
+__all__ = [
+    "ROOT_LOGGER_NAME",
+    "setup_logging",
+]
 
 
 def setup_logging(logs_dir: str | Path = "logs") -> None:
@@ -32,7 +39,7 @@ def setup_logging(logs_dir: str | Path = "logs") -> None:
     Raises:
         OSError: If the log directory cannot be created.
     """
-    root_logger = logging.getLogger(_ROOT_LOGGER_NAME)
+    root_logger = logging.getLogger(ROOT_LOGGER_NAME)
 
     # Avoid duplicate handler registration.
     if root_logger.handlers:
@@ -43,7 +50,11 @@ def setup_logging(logs_dir: str | Path = "logs") -> None:
     logs_path = Path(logs_dir)
     logs_path.mkdir(parents=True, exist_ok=True)
 
-    file_handler = logging.FileHandler(logs_path / "pipeline.log", mode="a")
+    file_handler = logging.handlers.RotatingFileHandler(
+        logs_path / "pipeline.log",
+        maxBytes=10 * 1024 * 1024,  # 10 MB
+        backupCount=3,
+    )
     file_handler.setLevel(logging.DEBUG)
     file_handler.setFormatter(logging.Formatter(_LOG_FORMAT))
 

@@ -2,7 +2,10 @@
 
 from __future__ import annotations
 
+import dataclasses
 from pathlib import Path
+
+import pytest
 
 from pkg.config import ProjectConfig
 
@@ -18,11 +21,8 @@ class TestProjectConfig:
     def test_frozen_prevents_mutation(self) -> None:
         """The dataclass is frozen — attribute assignment raises FrozenInstanceError."""
         config = ProjectConfig()
-        try:
+        with pytest.raises(dataclasses.FrozenInstanceError):
             config.raw_data_filename = "overridden.csv"  # type: ignore[misc]
-            assert False, "Expected FrozenInstanceError"
-        except (TypeError, AttributeError):
-            pass  # expected for frozen dataclass
 
     def test_default_paths_are_relative(self) -> None:
         """Default path fields are relative Path objects."""
@@ -43,3 +43,12 @@ class TestProjectConfig:
         """logs_dir defaults to 'logs'."""
         config = ProjectConfig()
         assert config.logs_dir == Path("logs")
+
+    def test_missing_config_fields_from_agents(self) -> None:
+        """Fields referenced in AGENTS-*.md files exist on ProjectConfig."""
+        config = ProjectConfig()
+        # AGENTS-acquire.md references config.local_fallback_dir
+        assert hasattr(config, "local_fallback_dir")
+        # AGENTS-analysis.md references config.n_bootstrap and .bootstrap_ci_level
+        assert hasattr(config, "n_bootstrap")
+        assert hasattr(config, "bootstrap_ci_level")

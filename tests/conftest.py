@@ -7,6 +7,8 @@ from typing import Generator
 
 import pytest
 
+from pkg import ROOT_LOGGER_NAME
+
 
 def pytest_configure(config: pytest.Config) -> None:
     """Register custom markers."""
@@ -20,5 +22,5 @@ def _disable_logging(caplog: pytest.LogCaptureFixture) -> Generator[None, None, 
     The project root logger is set to CRITICAL for the duration of every
     test.  Individual tests can override by calling ``caplog.set_level(...)``.
     """
-    caplog.set_level(logging.CRITICAL, logger="pkg")
+    caplog.set_level(logging.CRITICAL, logger=ROOT_LOGGER_NAME)
     yield
