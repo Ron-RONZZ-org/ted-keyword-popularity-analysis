@@ -67,7 +67,7 @@ project/
 | Component | Choice (default) |
 |-----------|------------------|
 | Language | Python ≥ 3.10 |
-| Package manager | pip via pyproject.toml |
+| Package manager | uv (preferred) or pip via pyproject.toml |
 | Data handling | pandas, numpy |
 | Statistics | scipy, statsmodels |
 | Visualization | matplotlib, seaborn |
@@ -84,10 +84,18 @@ project/
 All dependencies are declared in `pyproject.toml`. Install with:
 
 ```bash
-pip install -e ".[dev]"
+uv pip install -e ".[dev]"
 ```
 
+(`pip install -e ".[dev]"` also works if you don't have `uv` installed.)
+
 **Do NOT** add dependencies without updating `pyproject.toml`.
+
+For new projects using this boilerplate, create a virtual environment first:
+
+```bash
+uv venv && source .venv/bin/activate && uv pip install -e ".[dev]"
+```
 
 ---
 
